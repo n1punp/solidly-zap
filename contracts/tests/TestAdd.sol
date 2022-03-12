@@ -14,54 +14,6 @@ import '../utils/console.sol';
 import '../SolidlyZap.sol';
 
 contract TestAdd is DSTest, stdCheats {
-  /// @notice x is in 1e18
-  function sqrt(uint x) private pure returns (uint) {
-    unchecked {
-      x = x * 1e18; // multiply by 1e18 to keep 1e18 multiplier
-      if (x == 0) return 0;
-      else {
-        uint xx = x;
-        uint r = 1;
-        if (xx >= 0x100000000000000000000000000000000) {
-          xx >>= 128;
-          r <<= 64;
-        }
-        if (xx >= 0x10000000000000000) {
-          xx >>= 64;
-          r <<= 32;
-        }
-        if (xx >= 0x100000000) {
-          xx >>= 32;
-          r <<= 16;
-        }
-        if (xx >= 0x10000) {
-          xx >>= 16;
-          r <<= 8;
-        }
-        if (xx >= 0x100) {
-          xx >>= 8;
-          r <<= 4;
-        }
-        if (xx >= 0x10) {
-          xx >>= 4;
-          r <<= 2;
-        }
-        if (xx >= 0x8) {
-          r <<= 1;
-        }
-        r = (r + x / r) >> 1;
-        r = (r + x / r) >> 1;
-        r = (r + x / r) >> 1;
-        r = (r + x / r) >> 1;
-        r = (r + x / r) >> 1;
-        r = (r + x / r) >> 1;
-        r = (r + x / r) >> 1; // Seven iterations should be enough
-        uint r1 = x / r;
-        return r < r1 ? r : r1;
-      }
-    }
-  }
-
   using SafeERC20 for IERC20;
   Vm cheats = Vm(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
   BaseV1Pair pair;
@@ -133,5 +85,53 @@ contract TestAdd is DSTest, stdCheats {
 
     // check approx liquidity (within 0.01% fee)
     require(liquidity >= (expShares * 9999) / 10000 && liquidity <= expShares, 'shares too far');
+  }
+
+  /// @notice x is in 1e18
+  function sqrt(uint x) private pure returns (uint) {
+    unchecked {
+      x = x * 1e18; // multiply by 1e18 to keep 1e18 multiplier
+      if (x == 0) return 0;
+      else {
+        uint xx = x;
+        uint r = 1;
+        if (xx >= 0x100000000000000000000000000000000) {
+          xx >>= 128;
+          r <<= 64;
+        }
+        if (xx >= 0x10000000000000000) {
+          xx >>= 64;
+          r <<= 32;
+        }
+        if (xx >= 0x100000000) {
+          xx >>= 32;
+          r <<= 16;
+        }
+        if (xx >= 0x10000) {
+          xx >>= 16;
+          r <<= 8;
+        }
+        if (xx >= 0x100) {
+          xx >>= 8;
+          r <<= 4;
+        }
+        if (xx >= 0x10) {
+          xx >>= 4;
+          r <<= 2;
+        }
+        if (xx >= 0x8) {
+          r <<= 1;
+        }
+        r = (r + x / r) >> 1;
+        r = (r + x / r) >> 1;
+        r = (r + x / r) >> 1;
+        r = (r + x / r) >> 1;
+        r = (r + x / r) >> 1;
+        r = (r + x / r) >> 1;
+        r = (r + x / r) >> 1; // Seven iterations should be enough
+        uint r1 = x / r;
+        return r < r1 ? r : r1;
+      }
+    }
   }
 }
