@@ -88,6 +88,7 @@ contract TestAdd is DSTest, stdCheats {
   }
 
   /// @notice x is in 1e18
+  /// https://github.com/abdk-consulting/abdk-libraries-solidity/blob/master/ABDKMath64x64.sol#L727
   function sqrt(uint x) private pure returns (uint) {
     unchecked {
       x = x * 1e18; // multiply by 1e18 to keep 1e18 multiplier
