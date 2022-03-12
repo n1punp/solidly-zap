@@ -2,7 +2,7 @@
 pragma solidity 0.8.11;
 
 import 'OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/IERC20.sol';
-import 'OpenZeppelin/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol';
+import 'OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/utils/SafeERC20.sol';
 
 import '../../interfaces/Vm.sol';
 import '../../interfaces/IRouter.sol';
@@ -16,7 +16,6 @@ import '../SolidlyOptimalSwap.sol';
 contract TestSwap is DSTest, stdCheats {
   using SafeERC20 for IERC20;
   Vm cheats = Vm(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
-  SolidlyOptimalSwap swap;
   BaseV1Pair pair;
   IRouter router;
   uint feeBps;
@@ -25,7 +24,6 @@ contract TestSwap is DSTest, stdCheats {
   Vm vm;
 
   function setUp() public {
-    swap = new SolidlyOptimalSwap();
     vm = Vm(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
     pair = BaseV1Pair(0x154eA0E896695824C87985a52230674C2BE7731b); // USDC/FRAX stable pool
     // pair = BaseV1Pair(0xCc7311Ac0aD11702ad674FB40f8E6E09D49C13e3); // DAI/MIM stable pool
@@ -55,14 +53,14 @@ contract TestSwap is DSTest, stdCheats {
     vm.assume(amt1 > 0);
     vm.assume(amt0 * r1 > amt1 * r0); // ensure swap direction 0 -> 1
 
-    uint swapAmt = swap.getOptimalSwapAmountBinarySearch(
+    uint swapAmt = SolidlyOptimalSwap.getOptimalSwapAmountBinarySearch(
       (r0 * 10**18) / 10**token0Decimal,
       (r1 * 10**18) / 10**token1Decimal,
       (amt0 * 10**18) / 10**token0Decimal,
       (amt1 * 10**18) / 10**token1Decimal,
       feeBps
     );
-    uint swapAmt2 = swap.getOptimalSwapAmountNewton(
+    uint swapAmt2 = SolidlyOptimalSwap.getOptimalSwapAmountNewton(
       (r0 * 10**18) / 10**token0Decimal,
       (r1 * 10**18) / 10**token1Decimal,
       (amt0 * 10**18) / 10**token0Decimal,

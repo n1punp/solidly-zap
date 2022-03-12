@@ -4,7 +4,7 @@ pragma solidity 0.8.11;
 /// @title Optimal swap calculation for Solidly stable pool (x^3y + xy^3 = k)
 /// @author Alpha Finance Lab
 /// @notice The contract is unaudited. Use at your own risk.
-contract SolidlyOptimalSwap {
+library SolidlyOptimalSwap {
   uint private constant BPS = 1e4;
 
   /// @notice A -> B

@@ -37,4 +37,6 @@ interface IRouter {
     );
 
   function getAmountsOut(uint, route[] memory) external view returns (uint[] memory);
+
+  function factory() external view returns (address);
 }
